@@ -71,8 +71,7 @@ main(int argc, char **argv)
 	}
     }
     debug = new Debug(debugArg);
-
-    DEBUG(myDbg, "First Debug Test :D");
+    
     DEBUG(dbgThread, "Entering main");
 
     kernel = new KernelType(argc, argv);
