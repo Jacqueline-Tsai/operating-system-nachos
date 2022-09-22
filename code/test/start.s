@@ -138,6 +138,14 @@ PrintInt:
 	j       $31
 	.end    PrintInt
 
+	.globl	Log
+	.ent	Log
+Log:
+	addiu	$2,$0,SC_Log
+	syscall
+	j	$31
+	.end	Log
+
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

@@ -58,12 +58,23 @@ ExceptionHandler(ExceptionType which)
 	case SyscallException:
 	    switch(type) {
 		case SC_Halt:
-		    DEBUG(dbgAddr, "Shutdown, initiated by user program.\n");
-   		    kernel->interrupt->Halt();
-		    break;
+			DEBUG(dbgAddr, "Shutdown, initiated by user program.\n");
+   			kernel->interrupt->Halt();
+			break;
+		case SC_ThreadYield:
+			cout << "Call ThreadYield" << endl;
+			kernel->currentThread->Yield();
+			return;
 		case SC_PrintInt:
 			val=kernel->machine->ReadRegister(4);
-			cout << "Print integer:" <<val << endl;
+			cout << "Print integer:" << val << endl;
+			return;
+		case SC_Log:
+			val=kernel->machine->ReadRegister(4);
+			if(val==97+8 || val==65+8)
+				cout << "[B10832008_Log]error" << endl;
+			else
+				cout << "[B10832008_Log]" << char(val) << endl;
 			return;
 /*		case SC_Exec:
 			DEBUG(dbgAddr, "Exec\n");
@@ -80,8 +91,8 @@ ExceptionHandler(ExceptionType which)
 			kernel->currentThread->Finish();
 			break;
 		default:
-		    cerr << "Unexpected system call " << type << "\n";
- 		    break;
+			cerr << "Unexpected system call " << type << "\n";
+ 			break;
 	    }
 	    break;
 	case PageFaultException:

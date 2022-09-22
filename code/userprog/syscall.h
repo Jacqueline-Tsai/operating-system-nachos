@@ -129,6 +129,9 @@ void ThreadFork(void (*func)());
 void ThreadYield();		
 
 void PrintInt(int number);	//my System Call
+
+void Log(char c);
+
 #endif /* IN_ASM */
 
 #endif /* SYSCALL_H */
