@@ -33,7 +33,7 @@ CPP = /lib/cpp
 INCDIR =-I../userprog -I../threads -I../lib
 CFLAGS = -G 0 -c $(INCDIR)
 
-all: halt shell matmult sort test1 test2 hw1_test 
+all: halt shell matmult sort test1 test2 hw1_test threadyield_test
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.s > strt.s
@@ -79,4 +79,9 @@ hw1_test: hw1_test.o start.o
 hw1_test.o: hw1_test.c
 	$(CC) $(CFLAGS) -c hw1_test.c
 
+threadyield_test: threadyield_test.o start.o
+	$(LD) $(LDFLAGS) start.o threadyield_test.o -o threadyield_test.coff
+	../bin/coff2noff threadyield_test.coff threadyield_test
 
+threadyield_test.o: threadyield_test.c
+	$(CC) $(CFLAGS) -c threadyield_test.c

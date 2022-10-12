@@ -32,6 +32,18 @@ int PriorityCompare(Thread *a, Thread *b) {
     return a->getPriority() > b->getPriority() ? 1 : -1;
 }
 
+int BurstTimeCompare(Thread *a, Thread *b) {
+    if(a->getBurstTime() == b->getBurstTime())
+        return 0;
+    return a->getBurstTime() > b->getBurstTime() ? 1 : -1;
+}
+
+int IndexCompare(Thread *a, Thread *b) {
+    if(a->getIndex() == b->getIndex())
+        return 0;
+    return a->getIndex() > b->getIndex() ? 1 : -1;
+}
+
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
 // 	Initialize the list of ready but not running threads.
@@ -49,15 +61,15 @@ Scheduler::Scheduler(SchedulerType type)
 	switch(schedulerType) {
     	case RR:
         	readyList = new List<Thread *>;
-        	break;
+		break;
     	case SJF:
-		/* todo */
+		readyList = new SortedList<Thread *>(BurstTimeCompare);
         	break;
     	case Priority:
 		readyList = new SortedList<Thread *>(PriorityCompare);
         	break;
     	case FIFO:
-		/* todo */
+		readyList = new SortedList<Thread *>(IndexCompare);
 		break;
    	}
 	toBeDestroyed = NULL;

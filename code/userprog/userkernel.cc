@@ -27,7 +27,8 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
 	    debugUserProg = TRUE;
 	}
 	else if (strcmp(argv[i], "-e") == 0) {
-		execfile[++execfileNum]= argv[++i];
+		t[++execfileNum] = new Thread(argv[++i]);
+		t[execfileNum]->setIndex(execfileNum);
 	}
     	 else if (strcmp(argv[i], "-u") == 0) {
 		cout << "===========The following argument is defined in userkernel.cc" << endl;
@@ -42,6 +43,12 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
 		cout << "For example:" << endl;
 		cout << "	./nachos -s : Print machine status during the machine is on." << endl;
 		cout << "	./nachos -e file1 -e file2 : executing file1 and file2."  << endl;
+	}
+	else if (strcmp(argv[i], "-prio") == 0) {
+		t[execfileNum]->setPriority(atoi(argv[i+1]));
+	}
+	else if (strcmp(argv[i], "-burst") == 0) {
+		t[execfileNum]->setBurstTime(atoi(argv[i+1]));
 	}
     }
 }
@@ -94,12 +101,11 @@ UserProgKernel::Run()
 
 	cout << "Total threads number is " << execfileNum << endl;
 	for (int n=1;n<=execfileNum;n++)
-		{
-		t[n] = new Thread(execfile[n]);
+	{
 		t[n]->space = new AddrSpace();
 		t[n]->Fork((VoidFunctionPtr) &ForkExecute, (void *)t[n]);
-		cout << "Thread " << execfile[n] << " is executing." << endl;
-		}
+		cout << "Thread " << t[n]->getName() << " is executing." << endl;
+	}
 //	Thread *t1 = new Thread(execfile[1]);
 //	Thread *t1 = new Thread("../test/test1");
 //	Thread *t2 = new Thread("../test/test2");
