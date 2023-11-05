@@ -1,4 +1,4 @@
-This is a modified operating system based on Nachos 4.3.
+This is a modified operating system based on Nachos 3.4.
 
 Nachos 4.0 is somewhat of a re-write of Nachos 3.4.
 The main differences are:
